@@ -27,7 +27,7 @@ def convert_to_vanity(number):
     combinations = [''.join(chars) for chars in itertools.product(*letters)]
     return combinations
     
-    This section responsible for collecting the top 5 vanity combination then save to dynamodb.
+    # This section responsible for collecting the top 5 vanity combination then save to dynamodb.
     
     def lambda_handler(event, context):
     caller_number = event['phone_number']
@@ -41,6 +41,7 @@ def convert_to_vanity(number):
     
     table.put_item(Item=item)
     
+    # The results were output as JSON then send to amazon connect.
     return {
         'statusCode': 200,
         'body': 'Vanity numbers saved to DynamoDB'
