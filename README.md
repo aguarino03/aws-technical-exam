@@ -8,6 +8,7 @@ Function 1: Converting telephone number to vanity
 
 This section maps the letter corresponding numbers.
 
+
 def convert_to_vanity(number):
     mapping = {
 		'0': ['0'],
