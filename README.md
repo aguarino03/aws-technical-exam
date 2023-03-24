@@ -3,26 +3,10 @@
 This is only for technical exam.
 
 
-Function 1: Converting telephone number to vanity
+# Function 1: Converting telephone number to vanity.
 
-
-This section maps the letter corresponding numbers.
-
-
-def convert_to_vanity(number):
-    mapping = {
-		'0': ['0'],
-		'1': ['1'],
-        '2': ['A', 'B', 'C'],
-        '3': ['D', 'E', 'F'],
-        '4': ['G', 'H', 'I'],
-        '5': ['J', 'K', 'L'],
-        '6': ['M', 'N', 'O'],
-        '7': ['P', 'Q', 'R', 'S'],
-        '8': ['T', 'U', 'V'],
-        '9': ['W', 'X', 'Y', 'Z']
-    }
     
+    # Translating phone number to combination of letters
     letters = [mapping[digit] for digit in number]
     combinations = [''.join(chars) for chars in itertools.product(*letters)]
     return combinations
@@ -50,8 +34,9 @@ def convert_to_vanity(number):
 
 
 
-Function 2:
-# Get the top 3 vanity numbers for the phone number from the DynamoDB table
+# Function 2: Get the top 3 vanity numbers for the phone number from the DynamoDB table
+    
+    
     response = dynamodb.query(
         TableName='phone_no_collection',
         KeyConditionExpression='caller_number = :caller_number',
