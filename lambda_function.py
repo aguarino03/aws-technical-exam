@@ -53,7 +53,7 @@ def get_best_vanity_numbers(vanity_numbers):
     Returns the best 5 vanity numbers based on some criteria
     """
     # Define a list of English words using the Datamuse API
-    response = requests.get('https://api.datamuse.com/words?sl={combination}', params={'max': 5})
+    response = requests.get('https://api.datamuse.com/words?sl={vanity_numbers}', params={'max': 5})
     english_words = set([word['word'] for word in response.json()])
     
     # Return with top 5 vanity numbers

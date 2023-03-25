@@ -1,20 +1,21 @@
-#import boto3
+import boto3
 import json
 
 def lambda_handler(event, context):
     
     # Get the phone number from the event
-    phone_number = ('618001657478')
+    phone_number = event['phone_number'] #('17500046841')
+    caller_number = event['caller_number'] #('1800344337')
     
     # Initialize the DynamoDB client
     dynamodb = boto3.client('dynamodb')
     
     # Get the top 3 vanity numbers for the phone number from the DynamoDB table
     response = dynamodb.query(
-        TableName='phone_no_collection',
+        TableName='vanity_numbers',
         KeyConditionExpression='caller_number = :caller_number',
         ExpressionAttributeValues={
-            ':caller_number': {'S': phone_number}
+            ':caller_number': {'S': caller_number}
         },
         ProjectionExpression='vanity_number',
         Limit=3,
