@@ -1,29 +1,35 @@
-import boto3
+#import boto3
+import json
 
 def lambda_handler(event, context):
-    # Set up DynamoDB resource and table
-    dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('phone_no_collection')
     
-    # Query the table for the top 3 vanity numbers
-    response = table.query(
-        IndexName='your_index_name',
-        KeyConditionExpression='partition_key = :pk',
+    # Get the phone number from the event
+    phone_number = ('618001657478')
+    
+    # Initialize the DynamoDB client
+    dynamodb = boto3.client('dynamodb')
+    
+    # Get the top 3 vanity numbers for the phone number from the DynamoDB table
+    response = dynamodb.query(
+        TableName='phone_no_collection',
+        KeyConditionExpression='caller_number = :caller_number',
         ExpressionAttributeValues={
-            ':pk': 'caller_number'
+            ':caller_number': {'S': phone_number}
         },
-        ScanIndexForward=False,
-        Limit=3
+        ProjectionExpression='vanity_number',
+        Limit=3,
+        ScanIndexForward=False
     )
     
-    # Extract the vanity numbers from the query response
-    vanity_numbers = [item['vanity_number'] for item in response['Items']]
+    # Extract the vanity numbers from the DynamoDB response
+    vanity_numbers = []
+    for item in response['Items']:
+        vanity_numbers.append(item['vanity_number'])
     
-    # Build the response object for Amazon Connect
-    connect_response = {
-        'statusCode': 200,
-        'status': 'SUCCESS',
-        'vanity_numbers': vanity_numbers
+    # Send the vanity numbers back to Amazon Connect
+    return {
+        "statusCode": 200,
+        "body": json.dumps({
+            "vanity_numbers": vanity_numbers
+        })
     }
-    
-    return connect_response
